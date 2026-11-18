@@ -86,6 +86,7 @@ def _class_chunks(
         for s in class_node.body
         if isinstance(s, ast.FunctionDef | ast.AsyncFunctionDef)
     ]
+    assert class_node.end_lineno is not None  # always set for parsed code
     end_header = (
         min([_start_line(n) for n in methods]) if methods else class_node.end_lineno + 1
     )  # noqa: E501
@@ -151,7 +152,7 @@ def _module_chunk(tree: ast.Module, lines: list[str], path: Path) -> Chunk | Non
         text=text,)
 
 
-def _start_line(node: DefNode) -> int:
+def _start_line(node: DefNode | ast.ClassDef) -> int:
     """First line of a def/class, counting its decorators."""
     if node.decorator_list:
         return node.decorator_list[0].lineno  # decorators come first, top to bottom

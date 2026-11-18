@@ -16,3 +16,4 @@ class Settings(BaseSettings):
 
     gemini_api_key: SecretStr | None = None
     model: str = "gemini-3.5-flash"
+    embedding_model: str = "gemini-embedding-2"
