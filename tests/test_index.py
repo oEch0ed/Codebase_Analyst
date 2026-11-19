@@ -4,13 +4,13 @@ import pytest
 
 from analyst import index
 from analyst.chunk import Chunk
+from analyst.config import StaleError
 from analyst.embed import Vector
 from analyst.index import (
     INDEX_DIR,
     INDEX_FILE,
     Index,
     IndexEntry,
-    WrongModelError,
     build_index,
     index_path,
     load_index,
@@ -136,5 +136,5 @@ def test_load_index_not_indexed_yet(tmp_path: Path) -> None:
 
 def test_load_index_wrong_model(tmp_path: Path) -> None:
     save_index(tmp_path, sample_index())  # built with "m"
-    with pytest.raises(WrongModelError, match="re-index"):
+    with pytest.raises(StaleError, match="re-index"):
         load_index(tmp_path, model="other-model")

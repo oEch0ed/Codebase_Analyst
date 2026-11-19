@@ -7,7 +7,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # src/analyst/config.py -> project root, so .env is found from any cwd
 ENV_FILE = Path(__file__).resolve().parents[2] / ".env"
 
-
+class StaleError(Exception):
+    """ conflicing embedding models """
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ENV_FILE, extra="ignore")
 
@@ -15,5 +16,5 @@ class Settings(BaseSettings):
     max_file_lines: int = Field(default=1000, gt=0)
 
     gemini_api_key: SecretStr | None = None
-    model: str = "gemini-3.5-flash"
+    model: str = "gemini-3.5-flash-lite"
     embedding_model: str = "gemini-embedding-2"

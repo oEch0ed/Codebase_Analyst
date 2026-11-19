@@ -2,10 +2,10 @@
 
 import logging
 
-from google import genai
 from google.genai import types
 
 from .chunk import Chunk
+from .llm import make_client
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ def embed_chunks(chunks: list[Chunk], *, api_key: str, model: str) -> list[Vecto
 
     Embeds with task_type RETRIEVAL_DOCUMENT, BATCH_SIZE chunks per request.
     """
-    client = genai.Client(api_key=api_key)
+    client = make_client(api_key)
     config = types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT")
 
     vectors: list[Vector] = []
@@ -39,7 +39,7 @@ def embed_chunks(chunks: list[Chunk], *, api_key: str, model: str) -> list[Vecto
 
 def embed_query(question: str, *, api_key: str, model: str) -> Vector:
     """Vector for a user question, with task_type RETRIEVAL_QUERY."""
-    client = genai.Client(api_key=api_key)
+    client = make_client(api_key)
     config = types.EmbedContentConfig(task_type="RETRIEVAL_QUERY")
     response = client.models.embed_content(model=model, 
                                            contents=[types.Content(parts=[types.Part(text=question)])], 

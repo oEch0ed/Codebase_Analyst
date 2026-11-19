@@ -6,6 +6,7 @@ from pathlib import Path
 from pydantic import BaseModel
 
 from .chunk import Chunk
+from .config import StaleError
 from .embed import Vector, embed_chunks
 
 logger = logging.getLogger(__name__)
@@ -23,9 +24,6 @@ class Index(BaseModel):
     embedding_model: str  # embedding model that made the vectors
     dimensions: int  # length of every vector
     entries: list[IndexEntry]
-
-class WrongModelError(Exception):
-    """Index was saved with a different embedding model"""
 
 def index_path(root: Path) -> Path:
     """Where the index for the repo at `root` lives: <root>/.analyst/index.json.
@@ -50,10 +48,10 @@ def save_index(root: Path, index: Index) -> Path:
     
 
 def load_index(root: Path, *, model: str) -> Index:
-    """"raises FileNotFoundError, WrongModelError."""
+    """"raises FileNotFoundError, Stale Error."""
     index = Index.model_validate_json(index_path(root).read_text(encoding="utf-8"))
     if index.embedding_model != model:
-        raise WrongModelError(
+        raise StaleError(
             f"Index was built with {index.embedding_model}, but the current model is {model}; re-index"
         )
     return index

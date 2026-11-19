@@ -64,10 +64,10 @@ class FakeModels:
 
 @pytest.fixture
 def fake(monkeypatch: pytest.MonkeyPatch) -> FakeModels:
-    """Replace genai.Client so no test touches the network."""
+    """Replace make_client so no test touches the network."""
     models = FakeModels()
     monkeypatch.setattr(
-        embed.genai, "Client", lambda api_key: SimpleNamespace(models=models)
+        embed, "make_client", lambda api_key: SimpleNamespace(models=models)
     )
     return models
 

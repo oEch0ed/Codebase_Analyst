@@ -23,3 +23,4 @@ build/
 # Secrets / local config
 .env
 selfnotes.md  
+.analyst
