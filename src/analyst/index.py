@@ -48,7 +48,7 @@ def save_index(root: Path, index: Index) -> Path:
     
 
 def load_index(root: Path, *, model: str) -> Index:
-    """"raises FileNotFoundError, Stale Error."""
+    """raises FileNotFoundError, Stale Error."""
     index = Index.model_validate_json(index_path(root).read_text(encoding="utf-8"))
     if index.embedding_model != model:
         raise StaleError(
