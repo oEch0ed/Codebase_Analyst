@@ -1,9 +1,4 @@
-"""Place Holder for now"""
-# i want to define a user query : {topk:list[str], query:str, model:str}
-# topk - text of the relevant chunks
-# query - the user's question
-# model - the embedding model for the user question, later check for wrong model error
-# i need to retrieve the top-k cosine simillar items 
+"""Retrieve the top - k most simillar chunks to the user's question"""
 
 from pathlib import Path
 
