@@ -89,7 +89,8 @@ def test_retrieve_returns_best_chunks(
 ) -> None:
     save_index(tmp_path, make_index())
 
-    result = retrieve("how?", tmp_path, api_key="test-key", embedding_model="test-model", k=2)
+    result = retrieve("how?", tmp_path, api_key="test-key", 
+                      embedding_model="test-model", k=2)
 
     assert [c.name for c in result] == ["same", "diagonal"]
     assert fake_embed_query.calls == [("how?", "test-key", "test-model")]
@@ -101,5 +102,6 @@ def test_retrieve_wrong_model_raises_stale_error(
     save_index(tmp_path, make_index())
 
     with pytest.raises(StaleError):
-        retrieve("how?", tmp_path, api_key="test-key", embedding_model="other-model", k=2)
+        retrieve("how?", tmp_path, api_key="test-key", embedding_model="other-model",
+                  k=2)
     assert fake_embed_query.calls == []  # fails before spending an API call

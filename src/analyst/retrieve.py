@@ -44,7 +44,7 @@ def topk(index:Index, query:Vector, k:int) -> list[int]:
 def build_prompt(question: str, chunks: list[Chunk]) -> str:
     """Question plus the retrieved code, each chunk headed by its location."""
     context = "\n\n".join(
-        f"### {c.path.as_posix()}:{c.start_line}-{c.end_line} ({c.kind} {c.name})\n```python\n{c.text}\n```"
+        f"### {c.path.as_posix()}:{c.start_line}-{c.end_line} ({c.kind} {c.name})\n```python\n{c.text}\n```"  # noqa: E501
         for c in chunks
     )
     return (
